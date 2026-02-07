@@ -1,9 +1,23 @@
+# 🗂️ Data Versioning in Machine Learning: Production Guide
+
+## 📋 Table of Contents
+- [What is Data Versioning?](#1️⃣-what-is-data-versioning-in-plain-english)
+- [Why It's Critical](#2️⃣-why-data-versioning-is-critical-in-production)
+- [Production Pipeline Flow](#3️⃣-high-level-production-flow-data--model)
+- [Key Concepts](#4️⃣-key-concepts-before-examples)
+- [Part A: DVC (Data Version Control)](#part-a--data-versioning-using-dvc-industry-standard)
+- [Part B: AWS Native Tools](#part-b--data-versioning-using-aws-native-tools)
+- [Part C: DVC vs AWS Native](#part-c--dvc-vs-aws-native-when-to-use-what)
+- [Mental Model](#11️⃣-mental-model-to-remember-forever)
+
+---
+
 ## 1️⃣ What is data versioning (in plain English)?
 
 **Data versioning = the ability to answer these questions anytime in production:**
 
 * Which **exact data** was used to train **this model**?
-* If the model breaks today, can I **reproduce** yesterday’s results?
+* If the model breaks today, can I **reproduce** yesterday's results?
 * If data changes, can I **roll back** safely?
 * Can I compare **Model v3 trained on Data v7** vs **Model v4 trained on Data v9**?
 
@@ -13,14 +27,14 @@
 
 ## 2️⃣ Why data versioning is CRITICAL in production
 
-Without data versioning:
+**Without data versioning:**
 
-* You **can’t reproduce** model behavior
+* You **can't reproduce** model behavior
 * Debugging becomes guesswork
 * Compliance / audits fail
 * Retraining becomes risky
 
-With data versioning:
+**With data versioning:**
 
 * Every model is **traceable**
 * Training is **deterministic**
@@ -31,7 +45,7 @@ With data versioning:
 
 ## 3️⃣ High-level production flow (data → model)
 
-Let’s anchor everything to this real pipeline:
+Let's anchor everything to this real pipeline:
 
 ```
 Raw Data (Data Lake)
@@ -93,7 +107,7 @@ Actual data lives in **S3**, not Git.
 s3://my-datalake/raw/transactions/2024-01-01.csv
 ```
 
-You **don’t modify** this. Raw data is append-only.
+You **don't modify** this. Raw data is append-only.
 
 ---
 
@@ -203,7 +217,7 @@ In production metadata store (MLflow / DB):
 }
 ```
 
-That’s **full reproducibility**.
+That's **full reproducibility**.
 
 ---
 
@@ -211,13 +225,17 @@ That’s **full reproducibility**.
 
 This is how **big enterprises** often do it.
 
-![Image](https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2021/07/22/Figure-2.-High-level-design-for-an-AWS-lake-house-implementation.png)
+### AWS Lake House Architecture
+![AWS Lake House Implementation](https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2021/07/22/Figure-2.-High-level-design-for-an-AWS-lake-house-implementation.png)
 
-![Image](https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2021/10/05/figure-1-3-1167x630.png)
+### AWS Data Pipeline Architecture
+![AWS Data Pipeline](https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2021/10/05/figure-1-3-1167x630.png)
 
-![Image](https://d2908q01vomqb2.cloudfront.net/77de68daecd823babbb58edb1c8e14d7106e83bb/2020/02/04/Next-Caller-Amazon-SageMaker-1.png)
+### SageMaker ML Pipeline
+![SageMaker Pipeline](https://d2908q01vomqb2.cloudfront.net/77de68daecd823babbb58edb1c8e14d7106e83bb/2020/02/04/Next-Caller-Amazon-SageMaker-1.png)
 
-![Image](https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2021/10/22/ML-4030-image001.jpg)
+### End-to-End ML Workflow
+![ML Workflow](https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2021/10/22/ML-4030-image001.jpg)
 
 ---
 
@@ -331,7 +349,7 @@ Model v4 ← Feature run 2024_01_02 ← Raw S3 versions
 
 ---
 
-## 10️⃣ How AWS answers “which data trained this model?”
+## 10️⃣ How AWS answers "which data trained this model?"
 
 Via:
 
@@ -380,3 +398,17 @@ Always store:
 ```
 (model_version, data_version, code_version)
 ```
+
+---
+
+## 📚 Additional Resources
+
+- [DVC Documentation](https://dvc.org/doc)
+- [AWS SageMaker Lineage](https://docs.aws.amazon.com/sagemaker/latest/dg/lineage-tracking.html)
+- [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html)
+- [SageMaker Feature Store](https://docs.aws.amazon.com/sagemaker/latest/dg/feature-store.html)
+- [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)
+
+---
+
+**Made with ❤️ for reproducible ML**
