@@ -1,0 +1,4 @@
+baseURL = "http://dukefeb1.s3-website-us-east-1.amazonaws.com"
+languageCode = "en-us"
+title = "My New Hugo Sit via AWS Cloud9"
+theme = "ananke"
